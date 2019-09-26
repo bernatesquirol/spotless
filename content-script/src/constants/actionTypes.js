@@ -14,3 +14,7 @@ export const AUTH = {
   LOG_IN_FAILURE: 'LOG_IN_FAILURE',
   LOG_OUT: 'LOG_OUT'
 }
+
+export const CHROME_ACTIONS = {
+  MUTE: 'MUTE'
+}

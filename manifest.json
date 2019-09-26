@@ -15,6 +15,7 @@
   },
   "permissions": [
     "cookies",
+    "tabs",
     "https://open.spotify.com/",
     "https://spotify.com/"
   ],

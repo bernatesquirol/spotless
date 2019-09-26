@@ -16,20 +16,29 @@ storeWithMiddleware.ready().then(() => {
     const artistIsSpotify = document.querySelector('.track-info__artists a').text === 'Spotify'
     const trackNameIsAds = document.querySelector('.track-info__name a').text === 'Advertisement'
     const titleContainsAds = document.title.includes('Advertisement')
-
-    if (artistIsSpotify || trackNameIsAds || titleContainsAds) {
+    const allProgressTime = document.querySelectorAll('.playback-bar__progress-time')
+    const shortSong = allProgressTime!=null
+      && allProgressTime.length>1 && allProgressTime[1].textContent!=null
+      && allProgressTime[1].textContent.split(':').length==2
+      && parseInt(allProgressTime[1].textContent.split(':')[0])<1
+      && parseInt(allProgressTime[1].textContent.split(':')[1])<31
+    console.log('check',artistIsSpotify,trackNameIsAds,titleContainsAds,shortSong)
+    if (artistIsSpotify || trackNameIsAds || titleContainsAds || shortSong) {
       if (!muting) {
-        store.dispatch(getPlaybackData())
-        .then(() => {
-          store.dispatch(onVolumeMuteToggle())
-
+        store.dispatch({type:'MUTE', mute:!muting}).then(()=>{
           muting = true
+          store.dispatch(getPlaybackData())
+            .then(() => {
+              store.dispatch(onVolumeMuteToggle())              
         }) 
-      }
+      })
+    }
     } else {
       if (muting) {
-        store.dispatch(onVolumeMuteToggle())
-        muting = false
+        store.dispatch({type:'MUTE', mute:!muting}).then(()=>{
+          muting = false
+          store.dispatch(onVolumeMuteToggle())
+        })
       }
     }
   })
